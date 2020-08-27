@@ -8,41 +8,22 @@ import java.util.stream.IntStream;
 public class Sorter {
 
     private static final Integer RESULT_SIZE = 10;
+    private static final Integer WORKERS_NUMBER = 15;
 
     public static void main(String[] args) {
         Random random = new Random();
-
-        List<Integer> list01 = IntStream.range(0, 2001)
-                .map(v -> random.nextInt(10000))
-                .boxed()
-                .collect(Collectors.toList());
-        List<Integer> list02 = IntStream.range(0, 2001)
-                .map(v -> random.nextInt(20000))
-                .boxed()
-                .collect(Collectors.toList());
-        List<Integer> list03 = IntStream.range(0, 2001)
-                .map(v -> random.nextInt(30000))
-                .boxed()
-                .collect(Collectors.toList());
-        List<Integer> list04 = IntStream.range(0, 2001)
-                .map(v -> random.nextInt(40000))
-                .boxed()
-                .collect(Collectors.toList());
-        List<Integer> list05 = IntStream.range(0, 4001)
-                .map(v -> random.nextInt(70000))
-                .boxed()
-                .collect(Collectors.toList());
-
         ThreadSafeTreeSet<Integer> result = new ThreadSafeTreeSet<>(RESULT_SIZE);
-        ResultPrinter resultPrinter = new ResultPrinter(result, 5);
+        ResultPrinter resultPrinter = new ResultPrinter(result, WORKERS_NUMBER);
 
         ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         executorService.execute(resultPrinter);
-        executorService.execute(new Processor("worker 1", result, list01, resultPrinter));
-        executorService.execute(new Processor("worker 2", result, list02, resultPrinter));
-        executorService.execute(new Processor("worker 3", result, list03, resultPrinter));
-        executorService.execute(new Processor("worker 4", result, list04, resultPrinter));
-        executorService.execute(new Processor("worker 5", result, list05, resultPrinter));
+        for (int i = 0; i < WORKERS_NUMBER; i++) {
+            List<Integer> list = IntStream.rangeClosed(0, 80_000)
+                    .map(v -> random.nextInt(150_000))
+                    .boxed()
+                    .collect(Collectors.toList());
+            executorService.execute(new Processor("Worker " + i, result, list, resultPrinter));
+        }
 
         executorService.shutdown();
     }
