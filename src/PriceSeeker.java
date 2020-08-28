@@ -10,6 +10,7 @@ import java.io.File;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class PriceSeeker {
 
@@ -41,7 +42,12 @@ public class PriceSeeker {
         }
 
         long endTime = System.currentTimeMillis();
-        System.out.printf("Task finished. Elapsed time: %s seconds%n", (endTime - startTime) / 1000F);
+        long elapsedTime = endTime - startTime;
+        System.out.printf("Task finished. Elapsed time: %d min %d sec%n",
+                TimeUnit.MILLISECONDS.toMinutes(elapsedTime),
+                TimeUnit.MILLISECONDS.toSeconds(elapsedTime) -
+                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(elapsedTime)));
+
     }
 
     public void processPriceSearching(int resultSize, int maxSameId, String path) {
