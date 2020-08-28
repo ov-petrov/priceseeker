@@ -45,7 +45,7 @@ public class Processor implements Runnable {
                 .count();
         boolean result = resultSet.checkProperty(biFunction, item) < maxSameId;
         if (!result)
-            System.out.printf("Price with id %s can't added because already added %s prices with the same id", item.getId(), maxSameId);
+            System.out.printf("Price with id %s can't added because already added %s prices with same id", item.getId(), maxSameId);
 
         return result;
     }

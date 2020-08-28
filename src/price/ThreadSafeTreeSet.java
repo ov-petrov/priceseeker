@@ -1,8 +1,9 @@
 package price;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.TreeSet;
 import java.util.function.BiFunction;
-import java.util.stream.Collectors;
 
 public class ThreadSafeTreeSet<T extends Comparable<T>> {
     private final TreeSet<T> treeSet;
@@ -32,10 +33,8 @@ public class ThreadSafeTreeSet<T extends Comparable<T>> {
             treeSet.remove(treeSet.last()); // Removing biggest item
     }
 
-    public synchronized String print() {
-        return treeSet.stream()
-                .map(Object::toString)
-                .collect(Collectors.joining(",\n"));
+    public synchronized List<T> getResult() {
+        return new ArrayList<>(treeSet);
     }
 
     public synchronized Integer checkProperty(BiFunction<TreeSet<T>, T, Integer> function, T item) {

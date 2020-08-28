@@ -8,17 +8,20 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Generator {
-    private Random random = new Random();
+    private final Random random = new Random();
 
-    public List<Price> generate(Integer count) {
-        return IntStream.rangeClosed(1, count).boxed()
+    public List<Price> generate(Integer recordsNumber) {
+        return IntStream.rangeClosed(1, recordsNumber).boxed()
                 .map(v -> new Price(v * 10, generateString(10), generateString(8), generateString(6), generateFloat()))
                 .collect(Collectors.toList());
     }
 
     private Float generateFloat() {
         float value = random.nextFloat() * random.nextInt(10_000);
-        return value < 1.0F ? value * 100 : value;
+        if (value == 0.0F)
+            return 1000.00F;
+
+        return value < 10.0F ? value * 100 : value;
     }
 
     private String generateString(int length) {

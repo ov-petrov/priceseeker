@@ -1,7 +1,11 @@
 package runnable;
 
+import generator.FileSaver;
 import price.Price;
 import price.ThreadSafeTreeSet;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ResultPrinter implements Runnable {
     private final ThreadSafeTreeSet<Price> result;
@@ -17,8 +21,13 @@ public class ResultPrinter implements Runnable {
         System.out.printf("%s is finished%n", processor.getName());
         workersFinished++;
         if (workersFinished == workersCount) {
+            FileSaver fileSaver = new FileSaver();
+            List<Price> finalPrices = this.result.getResult();
+            fileSaver.save(finalPrices, "result.csv", ",");
             System.out.println("Result:");
-            System.out.println(result.print());
+            System.out.println(finalPrices.stream()
+                    .map(Object::toString)
+                    .collect(Collectors.joining(",\n")));
         }
     }
 

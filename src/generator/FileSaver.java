@@ -16,6 +16,7 @@ public class FileSaver {
             pricesList.forEach(v -> writeLine(bw, v, delimiter));
             bw.flush();
             bw.close();
+            System.out.printf("File %s saved%n", fileName);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -40,13 +41,13 @@ public class FileSaver {
         }
     }
 
-    public static void main(String[] args) {
+    public void generateTestData(int filesNumber, int recordsNumber, String path) {
         FileSaver fileSaver = new FileSaver();
         Generator generator = new Generator();
-        for (int i = 1; i < 51; i++) {
-            fileSaver.save(generator.generate(i * 100), "C:/temp/testData/test" + i + ".csv", ",");
+        for (int i = 1; i <= filesNumber; i++) {
+            fileSaver.save(generator.generate(recordsNumber), path + "/test" + i + ".csv", ",");
         }
-
     }
+
 
 }
