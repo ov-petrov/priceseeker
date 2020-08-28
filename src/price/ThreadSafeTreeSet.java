@@ -1,4 +1,7 @@
+package price;
+
 import java.util.TreeSet;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 public class ThreadSafeTreeSet<T extends Comparable<T>> {
@@ -14,6 +17,10 @@ public class ThreadSafeTreeSet<T extends Comparable<T>> {
         return treeSet.isEmpty() ? null : treeSet.first();
     }
 
+    public synchronized T getBiggest() {
+        return treeSet.isEmpty() ? null : treeSet.last();
+    }
+
     public synchronized boolean add(T element) {
         boolean result = treeSet.add(element);
         trimToMaxSize();
@@ -22,13 +29,17 @@ public class ThreadSafeTreeSet<T extends Comparable<T>> {
 
     private synchronized void trimToMaxSize() {
         while (treeSet.size() > maxSize)
-            treeSet.remove(treeSet.first());
+            treeSet.remove(treeSet.last()); // Removing biggest item
     }
 
     public synchronized String print() {
         return treeSet.stream()
                 .map(Object::toString)
                 .collect(Collectors.joining(", "));
+    }
+
+    public synchronized Integer checkProperty(BiFunction<TreeSet<T>, T, Integer> function, T item) {
+        return function.apply(treeSet, item);
     }
 
 }
