@@ -1,4 +1,7 @@
-package price;
+package runnable;
+
+import price.Price;
+import price.ThreadSafeTreeSet;
 
 public class ResultPrinter implements Runnable {
     private final ThreadSafeTreeSet<Price> result;

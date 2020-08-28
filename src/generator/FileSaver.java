@@ -43,7 +43,9 @@ public class FileSaver {
     public static void main(String[] args) {
         FileSaver fileSaver = new FileSaver();
         Generator generator = new Generator();
-        fileSaver.save(generator.generate(20), "testData/test02.csv", ",");
+        for (int i = 1; i < 51; i++) {
+            fileSaver.save(generator.generate(i * 100), "C:/temp/testData/test" + i + ".csv", ",");
+        }
 
     }
 

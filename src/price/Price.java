@@ -1,11 +1,11 @@
 package price;
 
 public class Price implements Comparable<Price> {
-    Integer id;
-    String name;
-    String condition;
-    String state;
-    Float price;
+    private Integer id;
+    private String name;
+    private String condition;
+    private String state;
+    private Float price;
 
     public Price() {
     }
@@ -65,10 +65,6 @@ public class Price implements Comparable<Price> {
 
     @Override
     public String toString() {
-        return "Price{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", price=" + price +
-                '}';
+        return "id=" + id + ", name=" + name + ", price=" + price;
     }
 }

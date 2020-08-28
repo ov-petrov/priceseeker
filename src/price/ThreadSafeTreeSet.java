@@ -35,7 +35,7 @@ public class ThreadSafeTreeSet<T extends Comparable<T>> {
     public synchronized String print() {
         return treeSet.stream()
                 .map(Object::toString)
-                .collect(Collectors.joining(", "));
+                .collect(Collectors.joining(",\n"));
     }
 
     public synchronized Integer checkProperty(BiFunction<TreeSet<T>, T, Integer> function, T item) {

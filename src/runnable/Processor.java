@@ -1,4 +1,7 @@
-package price;
+package runnable;
+
+import price.Price;
+import price.ThreadSafeTreeSet;
 
 import java.util.List;
 import java.util.TreeSet;
@@ -24,10 +27,11 @@ public class Processor implements Runnable {
         Price biggest = resultSet.getBiggest();
         if (biggest == null) {
             biggest = new Price();
-            biggest.setPrice(100_000_000.00F);
+            biggest.setPrice(100_000_000.00F); // Put very big price
         }
         for (Price item : processingList) {
-            if (item.price < biggest.price && checkProductId(resultSet, item)) {
+            if (item.getPrice() < biggest.getPrice() && checkProductId(resultSet, item)) {
+                System.out.printf("Founded small price: %s. Biggest price at the result collection: %s%n", item.getPrice(), biggest.getPrice());
                 resultSet.add(item);
                 biggest = resultSet.getBiggest();
             }
@@ -39,7 +43,11 @@ public class Processor implements Runnable {
         BiFunction<TreeSet<Price>, Price, Integer> biFunction = (set, pr) -> (int) set.stream()
                 .filter(v -> v.getId().equals(pr.getId()))
                 .count();
-        return resultSet.checkProperty(biFunction, item) < maxSameId;
+        boolean result = resultSet.checkProperty(biFunction, item) < maxSameId;
+        if (!result)
+            System.out.printf("Price with id %s can't added because already added %s prices with the same id", item.getId(), maxSameId);
+
+        return result;
     }
 
     public String getName() {

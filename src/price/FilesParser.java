@@ -15,8 +15,10 @@ public class FilesParser {
     }
 
     public List<File> getFilesInDirectory() {
-        if (!checkIsDirectory())
+        if (!checkIsDirectory()) {
+            System.out.printf("Path %s is not a directory or directory not found%n", directory);
             return Collections.emptyList();
+        }
 
         return Arrays.stream(Objects.requireNonNull(new File(this.directory).listFiles()))
                 .filter(v -> v.isFile() && v.getName().endsWith(".csv"))
@@ -28,7 +30,4 @@ public class FilesParser {
         return directory.isDirectory();
     }
 
-    public String getDirectory() {
-        return directory;
-    }
 }
