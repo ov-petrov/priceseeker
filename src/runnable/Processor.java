@@ -29,9 +29,10 @@ public class Processor implements Runnable {
             biggest = new Price();
             biggest.setPrice(100_000_000.00F); // Put very big price
         }
+        // It's not a problem if a 'biggest' value become a bit obsolete in the process of searching
         for (Price item : processingList) {
             if (item.getPrice() < biggest.getPrice() && checkProductId(resultSet, item)) {
-                System.out.printf("Founded small price: %s. Biggest price at the result collection: %s%n", item.getPrice(), biggest.getPrice());
+                System.out.printf("Founded small price: %s. The biggest price at the result collection: %s%n", item.getPrice(), biggest.getPrice());
                 resultSet.add(item);
                 biggest = resultSet.getBiggest();
             }
