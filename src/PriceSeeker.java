@@ -50,7 +50,7 @@ public class PriceSeeker {
         ThreadSafeTreeSet<Price> result = new ThreadSafeTreeSet<>(resultSize);
         ResultPrinter resultPrinter = new ResultPrinter(result, filesNumber);
 
-        ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() - 1);
+        ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         executorService.execute(resultPrinter);
         for (int i = 0; i < filesNumber; i++) {
             File file = filesToParse.get(i);
